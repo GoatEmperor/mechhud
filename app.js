@@ -81,3 +81,7 @@ sensor.addEventListener("error", (error) => {
   }
 });
 sensor.start();
+
+if ((navigator.oscpu+"").includes("Windows")) {
+  alert("This website is made for phones only. Some elements may be to small to read.")
+}
