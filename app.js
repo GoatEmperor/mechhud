@@ -1,4 +1,7 @@
 var clockmode = true
+if ((navigator.oscpu+"").includes("Windows")) {
+  alert("This website is made for phones only. Some elements may be to small to read.")
+}
 
 //startvideo()
 
@@ -74,6 +77,7 @@ sensor.addEventListener("reading", () => {
   // model is a Three.js object instantiated elsewhere.
   model.quaternion.fromArray(sensor.quaternion).inverse();
   console.log(sensor.quaternion)
+  document.getElementById("otherstats").innerHTML = `${sensor.quaternion}`
 });
 sensor.addEventListener("error", (error) => {
   if (event.error.name === "NotReadableError") {
@@ -81,7 +85,3 @@ sensor.addEventListener("error", (error) => {
   }
 });
 sensor.start();
-
-if ((navigator.oscpu+"").includes("Windows")) {
-  alert("This website is made for phones only. Some elements may be to small to read.")
-}
