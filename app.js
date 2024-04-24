@@ -12,7 +12,7 @@ function startvideo() {
   video.style.height = "100%";
 
   /* Setting up the constraint */
-  var facingMode = "user"; // Can be 'user' or 'environment' to access back or front camera (NEAT!)
+  var facingMode = "environment"; // Can be 'user' or 'environment' to access back or front camera (NEAT!)
   var constraints = {
     audio: false,
     video: {
