@@ -1,6 +1,6 @@
 var clockmode = true
 
-startvideo()
+//startvideo()
 
 function startvideo() {
   console.log("Starting camera")
