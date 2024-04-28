@@ -1,4 +1,5 @@
 var clockmode = true
+var lightlevel = 1
 const delay = ms => new Promise(res => setTimeout(res, ms));
 if ((navigator.oscpu+"").includes("Windows")) {
   alert("This website is made for phones only. Some elements may be to small to read.")
@@ -50,6 +51,7 @@ function success(position) {
   
   function error() {
     alert(`ERROR(${error.code}): ${error.message}`);
+    location.reload();
   }
   
   const options = {
@@ -65,7 +67,7 @@ function tick() {
     var second = date.getSeconds()
     var minute = date.getMinutes()
     var hour = date.getHours()
-
+    document.getElementById("lighttext").innerHTML = `Light: ${lightlevel}`
     
     if (clockmode) {
         document.getElementById("clock").innerHTML = `${hour}:${minute}:${second}`
@@ -77,3 +79,15 @@ function tick() {
 }
 
 window.requestAnimationFrame(tick);
+
+if ("AmbientLightSensor" in window) {
+  const sensor = new AmbientLightSensor();
+  sensor.addEventListener("reading", (event) => {
+    console.log("Current light level:", sensor.illuminance);
+    lightlevel = sensor.illuminance
+  });
+  sensor.addEventListener("error", (event) => {
+    console.log(event.error.name, event.error.message);
+  });
+  sensor.start();
+}
