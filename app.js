@@ -1,9 +1,16 @@
 var clockmode = true
+const delay = ms => new Promise(res => setTimeout(res, ms));
 if ((navigator.oscpu+"").includes("Windows")) {
   alert("This website is made for phones only. Some elements may be to small to read.")
 }
 
 //startvideo()
+
+function speak(text) {
+  let utterance = new SpeechSynthesisUtterance(text);
+  speechSynthesis.speak(utterance);
+
+}
 
 function startvideo() {
   console.log("Starting camera")
@@ -26,6 +33,7 @@ function startvideo() {
   /* Stream it to video element */
   navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
     video.srcObject = stream;
+    console.log("Camera is streaming")
   });
 }
 
@@ -69,19 +77,3 @@ function tick() {
 }
 
 window.requestAnimationFrame(tick);
-
-const ooptions = { frequency: 60, referenceFrame: "device" };
-const sensor = new AbsoluteOrientationSensor(ooptions);
-
-sensor.addEventListener("reading", () => {
-  // model is a Three.js object instantiated elsewhere.
-  model.quaternion.fromArray(sensor.quaternion).inverse();
-  console.log(sensor.quaternion)
-  document.getElementById("otherstats").innerHTML = `${sensor.quaternion}`
-});
-sensor.addEventListener("error", (error) => {
-  if (event.error.name === "NotReadableError") {
-    console.log("Sensor is not available.");
-  }
-});
-sensor.start();

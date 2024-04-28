@@ -34,6 +34,11 @@ video {
     top: 0;
     left: 0;
     z-index: -100;
+    
+}
+
+.nightvison {
+    filter: brightness(75) hue-rotate(180deg) ;
 }
 
 #overlay {
