@@ -1,5 +1,4 @@
 var clockmode = true
-var lightlevel = 1
 const delay = ms => new Promise(res => setTimeout(res, ms));
 if ((navigator.oscpu+"").includes("Windows")) {
   alert("This website is made for phones only. Some elements may be to small to read.")
@@ -67,7 +66,6 @@ function tick() {
     var second = date.getSeconds()
     var minute = date.getMinutes()
     var hour = date.getHours()
-    document.getElementById("lighttext").innerHTML = `Light: ${lightlevel}`
     
     if (clockmode) {
         document.getElementById("clock").innerHTML = `${hour}:${minute}:${second}`
@@ -80,14 +78,30 @@ function tick() {
 
 window.requestAnimationFrame(tick);
 
-if ("AmbientLightSensor" in window) {
-  const sensor = new AmbientLightSensor();
-  sensor.addEventListener("reading", (event) => {
-    console.log("Current light level:", sensor.illuminance);
-    lightlevel = sensor.illuminance
-  });
-  sensor.addEventListener("error", (event) => {
-    console.log(event.error.name, event.error.message);
-  });
-  sensor.start();
-}
+const ooptions = { frequency: 60, referenceFrame: "device" };
+const sensor = new AbsoluteOrientationSensor(ooptions);
+Promise.all([
+  navigator.permissions.query({ name: "accelerometer" }),
+  navigator.permissions.query({ name: "magnetometer" }),
+  navigator.permissions.query({ name: "gyroscope" }),
+]).then((results) => {
+  if (results.every((result) => result.state === "granted")) {
+    sensor.start();
+    // …
+  } else {
+    console.log("No permissions to use AbsoluteOrientationSensor.");
+  }
+});
+
+
+sensor.addEventListener("reading", () => {
+  // model is a Three.js object instantiated elsewhere.
+  model.quaternion.fromArray(sensor.quaternion).inverse();
+  document.getElementById("orientationtext"),innerHTML = sensor.quaternion
+});
+sensor.addEventListener("error", (error) => {
+  if (event.error.name === "NotReadableError") {
+    console.log("Sensor is not available.");
+  }
+});
+sensor.start();
