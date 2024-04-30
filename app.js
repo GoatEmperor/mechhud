@@ -38,14 +38,14 @@ function startvideo() {
 }
 
 
-function updategeo(latitude, longitude) {
+function updategeo(latitude, longitude, heading, speed, altitude) {
     console.log(latitude, longitude)
-    document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}`
+    document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}, ${altitude}u<br>${heading}<br>${speed}`
     //https://www.openstreetmap.org/#map=17/42.66923/-82.78201
 }
 
 function success(position) {
-    updategeo(position.coords.latitude, position.coords.longitude);
+    updategeo(position.coords.latitude, position.coords.longitude, position.coords.heading, position.coords.speed, position.coords.altitude);
   }
   
   function error() {
@@ -77,31 +77,3 @@ function tick() {
 }
 
 window.requestAnimationFrame(tick);
-
-const ooptions = { frequency: 60, referenceFrame: "device" };
-const sensor = new AbsoluteOrientationSensor(ooptions);
-Promise.all([
-  navigator.permissions.query({ name: "accelerometer" }),
-  navigator.permissions.query({ name: "magnetometer" }),
-  navigator.permissions.query({ name: "gyroscope" }),
-]).then((results) => {
-  if (results.every((result) => result.state === "granted")) {
-    sensor.start();
-    // …
-  } else {
-    console.log("No permissions to use AbsoluteOrientationSensor.");
-  }
-});
-
-
-sensor.addEventListener("reading", () => {
-  // model is a Three.js object instantiated elsewhere.
-  model.quaternion.fromArray(sensor.quaternion).inverse();
-  document.getElementById("orientationtext"),innerHTML = sensor.quaternion
-});
-sensor.addEventListener("error", (error) => {
-  if (event.error.name === "NotReadableError") {
-    console.log("Sensor is not available.");
-  }
-});
-sensor.start();
