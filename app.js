@@ -40,7 +40,11 @@ function startvideo() {
 
 function updategeo(latitude, longitude, heading, speed, altitude) {
     console.log(latitude, longitude)
-    document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}, ${altitude}u<br>${heading}<br>${speed}`
+    if (heading == null) {
+      document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}, ${altitude}<br>Speed: ${speed}`
+    } else {
+      document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}, ${altitude}<br>Heading: ${heading}<br>Speed: ${speed}`
+    }
     //https://www.openstreetmap.org/#map=17/42.66923/-82.78201
 }
 
@@ -49,7 +53,8 @@ function success(position) {
   }
   
   function error() {
-    alert(`ERROR(${error.code}): ${error.message}`);
+    document.getElementById("locationtext").innerHTML = `Error Code: ${error.code}: ${error.message}`
+    //alert(`ERROR(${error.code}): ${error.message}`);
     location.reload();
   }
   
