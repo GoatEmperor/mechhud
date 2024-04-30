@@ -1,4 +1,11 @@
 var clockmode = true
+var displaytick = 0
+const display = [
+  "-",
+  "\\",
+  "|",
+  "/",
+]
 const delay = ms => new Promise(res => setTimeout(res, ms));
 if ((navigator.oscpu+"").includes("Windows")) {
   alert("This website is made for phones only. Some elements may be to small to read.")
@@ -40,8 +47,9 @@ function startvideo() {
 
 function updategeo(latitude, longitude, heading, speed, altitude) {
     console.log(latitude, longitude)
+    displaytick += 1
     if (heading == null) {
-      document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}, ${altitude}<br>Speed: ${speed}`
+      document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}, ${altitude}<br>Speed: ${speed}<br>${display[displaytick % 4]}`
     } else {
       document.getElementById("locationtext").innerHTML = `Location: ${latitude}, ${longitude}, ${altitude}<br>Heading: ${heading}<br>Speed: ${speed}`
     }
