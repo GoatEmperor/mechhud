@@ -15,6 +15,7 @@ button {
     width: 100%;
     height: 95vh;
     padding: 1em;
+    position: relative;
 }
 
 #clock {
@@ -27,6 +28,8 @@ body {
     font-size: 10px;
     background-color: black;
     color: rgb(92, 214, 255);
+    text-shadow: 2px 0 #000000, -2px 0 #000000, 0 2px #000000, 0 -2px #000000,
+             1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #fff;
 }
 
 video {
@@ -48,4 +51,9 @@ video {
     z-index: -50;
     width: 100%;
     height: 100%;
+}
+
+.bottom {
+    position: absolute;
+    bottom:   20px;    
 }

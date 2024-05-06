@@ -1,10 +1,10 @@
 var clockmode = true
 var displaytick = 0
 const display = [
-  "-",
-  "\\",
-  "|",
-  "/",
+  "─",
+  "╲",
+  " │",
+  "╱",
 ]
 const delay = ms => new Promise(res => setTimeout(res, ms));
 if ((navigator.oscpu+"").includes("Windows")) {
@@ -73,6 +73,14 @@ function success(position) {
   };
   
   const watchID = navigator.geolocation.watchPosition(success, error, options);
+
+function checkmark(bool) {
+  if (bool) {
+    return "🟢"
+  } else {
+    return "🔴"
+  }
+}
   
 function tick() {
     var date = new Date()
@@ -85,6 +93,8 @@ function tick() {
     } else {
         document.getElementById("clock").innerHTML = date
     }
+
+    document.getElementById("status").innerHTML = `${checkmark(navigator.geolocation)} ${checkmark(video.srcObject)} ${checkmark(video.classList.contains("nightvison"))} ${checkmark(speechSynthesis)}`
 
     window.requestAnimationFrame(tick);
 }
