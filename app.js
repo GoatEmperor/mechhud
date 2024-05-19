@@ -7,8 +7,18 @@ const display = [
   "╱",
 ]
 const delay = ms => new Promise(res => setTimeout(res, ms));
+var slider = document.getElementById("fontsizerange");
+var fontlabel = document.getElementById("fontlabel");
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  console.log(this.value)
+  document.getElementById("head").style.fontSize = `${this.value}px`;
+  fontlabel.innerHTML = `Font Size: ${this.value}px`
+} 
+
 if ((navigator.oscpu+"").includes("Windows")) {
-  alert("This website is made for phones only. Some elements may be to small to read.")
+  //alert("This website is made for phones only. Some elements may be to small to read.")
 }
 
 //startvideo()
@@ -94,7 +104,7 @@ function tick() {
         document.getElementById("clock").innerHTML = date
     }
 
-    document.getElementById("status").innerHTML = `${checkmark(navigator.geolocation)} ${checkmark(video.srcObject)} ${checkmark(video.classList.contains("nightvison"))} ${checkmark(speechSynthesis)}`
+    document.getElementById("status").innerHTML = `${checkmark(navigator.geolocation)} ${checkmark(video.srcObject)} ${checkmark(video.classList.contains("nightvison"))} ${checkmark(speechSynthesis)} ${checkmark(!document.getElementById('settingsmenu').hidden)} ${checkmark(video.classList.contains("termvision"))}`
 
     window.requestAnimationFrame(tick);
 }
