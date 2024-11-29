@@ -29,8 +29,8 @@ body {
     /*font-size: 10px;*/
     background-color: black;
     color: rgb(92, 214, 255);
-    text-shadow: 2px 0 #000000, -2px 0 #000000, 0 2px #000000, 0 -2px #000000,
-             1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #fff;
+    /**text-shadow: 2px 0 #000000, -2px 0 #000000, 0 2px #000000, 0 -2px #000000,   **/
+    /**1px 1px #000000, -1px -1px #000000, 1px -1px #000000, -1px 1px #fff;         **/
 }
 
 video {
@@ -63,4 +63,17 @@ video {
 .bottom {
     position: absolute;
     bottom:   20px;    
+}
+
+#IframeMap {
+    position: absolute;
+    right: 30px;
+    top: 10px;
+}
+
+#weatherl {
+    position: absolute;
+    bottom: 7px;
+    text-align: center;
+    width: 100dvw ;
 }
