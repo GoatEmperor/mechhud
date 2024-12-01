@@ -15,6 +15,7 @@ second = date.getSeconds()
 minute = date.getMinutes()
 hour = date.getHours()
 
+
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
   console.log(this.value)
@@ -22,39 +23,18 @@ slider.oninput = function() {
   fontlabel.innerHTML = `Font Size: ${this.value}px`
 } 
 
-if ((navigator.oscpu+"").includes("Windows")) {
-  //alert("This website is made for phones only. Some elements may be to small to read.")
-}
-
 function speak(text) {
   let utterance = new SpeechSynthesisUtterance(text);
   speechSynthesis.speak(utterance);
 
 }
 
-function startvideo() {
-  console.log("Starting camera")
-  var video = document.getElementById("video")
-  video.setAttribute('playsinline', '');
-  video.setAttribute('autoplay', '');
-  video.setAttribute('muted', '');
-  video.style.width = '100%';
-  video.style.height = "100%";
-
-  /* Setting up the constraint */
-  var facingMode = "environment"; // Can be 'user' or 'environment' to access back or front camera (NEAT!)
-  var constraints = {
-    audio: false,
-    video: {
-     facingMode: facingMode
-    }
-  };
-
-  /* Stream it to video element */
-  navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
-    video.srcObject = stream;
-    console.log("Camera is streaming")
-  });
+function checkmark(bool) {
+  if (bool) {
+    return "🟢"
+  } else {
+    return "🔴"
+  }
 }
 
 function BatteryLevels() {
@@ -108,30 +88,22 @@ function updategeo(latitude, longitude, heading, speed, altitude) {
 }
 
 function success(position) {
-    updategeo(position.coords.latitude, position.coords.longitude, position.coords.heading, position.coords.speed, position.coords.altitude);
-  }
-  
-  function error() {
-    document.getElementById("locationtext").innerHTML = `Error Code: ${error.code}: ${error.message}`
-    //alert(`ERROR(${error.code}): ${error.message}`);
-    location.reload();
-  }
-  
-  const options = {
-    enableHighAccuracy: true,
-    maximumAge: 30000,
-    timeout: 27000,
-  };
-  
-  const watchID = navigator.geolocation.watchPosition(success, error, options);
-
-function checkmark(bool) {
-  if (bool) {
-    return "🟢"
-  } else {
-    return "🔴"
-  }
+  updategeo(position.coords.latitude, position.coords.longitude, position.coords.heading, position.coords.speed, position.coords.altitude);
 }
+
+function error() {
+  document.getElementById("locationtext").innerHTML = `Error Code: ${error.code}: ${error.message}`
+  //alert(`ERROR(${error.code}): ${error.message}`);
+  location.reload();
+}
+
+const options = {
+  enableHighAccuracy: true,
+  maximumAge: 30000,
+  timeout: 27000,
+};
+
+const watchID = navigator.geolocation.watchPosition(success, error, options);
 
 function getWeather(latitude, longitude) {
   const weatherP = document.getElementById('weatherl');
@@ -169,7 +141,104 @@ function getWeather(latitude, longitude) {
         weatherP.innerHTML = `Error fetching weather data: ${error}`
   });
 }
-  
+
+
+
+
+function startvideo() {
+  console.log("Starting camera")
+  var video = document.getElementById("video")
+  video.setAttribute('playsinline', '');
+  video.setAttribute('autoplay', '');
+  video.setAttribute('muted', '');
+  video.style.width = '100%';
+  video.style.height = "100%";
+
+  /* Setting up the constraint */
+  var facingMode = "environment"; // Can be 'user' or 'environment' to access back or front camera (NEAT!)
+  var constraints = {
+    audio: false,
+    video: {
+     facingMode: facingMode
+    }
+  };
+
+  /* Stream it to video element */
+  navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
+    video.srcObject = stream;
+    console.log("Camera is streaming")
+  });
+}
+// Sensors
+var Acceleration =    "Sensor Not Found"
+var lux =             "Sensor Not Found"
+var gav =             "Sensor Not Found"
+var gyro =            "Sensor Not Found"
+var orn =             "Sensor Not Found"
+if (typeof Accelerometer === "function") {
+  const acl = new Accelerometer({ frequency: 60 });
+  acl.addEventListener("reading", () => {
+    console.log(`Acceleration along the X-axis ${acl.x}`);
+    console.log(`Acceleration along the Y-axis ${acl.y}`);
+    console.log(`Acceleration along the Z-axis ${acl.z}`);
+    Acceleration = `Acceleration: ${acl.x}, ${acl.y}, ${acl.z}`
+  });
+  acl.start();
+}
+if ("AmbientLightSensor" in window) {
+  const sensor = new AmbientLightSensor({ frequency: 60 });
+  sensor.addEventListener("reading", (event) => {
+    console.log("Current light level:", sensor.illuminance);
+    lux = `Brightness: ${sensor.illuminance} lux`
+  });
+  sensor.addEventListener("error", (event) => {
+    console.log(event.error.name, event.error.message);
+  });
+  sensor.start();
+}
+if (typeof GravitySensor === "function") {
+  let gravitySensor = new GravitySensor({ frequency: 60 });
+  gravitySensor.addEventListener("reading", (e) => {
+    console.log(`Gravity along the X-axis ${gravitySensor.x}`);
+    console.log(`Gravity along the Y-axis ${gravitySensor.y}`);
+    console.log(`Gravity along the Z-axis ${gravitySensor.z}`);
+    gav = `Gravity: ${gravitySensor.x}, ${gravitySensor.y}, ${gravitySensor.z}`
+  });
+
+  gravitySensor.start();
+
+}
+if (typeof Gyroscope === "function") {
+  const gyroscope = new Gyroscope({ frequency: 60 });
+
+  gyroscope.addEventListener("reading", (e) => {
+    console.log(`Angular velocity along the X-axis ${gyroscope.x}`);
+    console.log(`Angular velocity along the Y-axis ${gyroscope.y}`);
+    console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
+    gyro = `Angular velocity: ${gyroscope.x}, ${gyroscope.y}, ${gyroscope.z}`
+  });
+  gyroscope.start();
+}
+if (typeof AbsoluteOrientationSensor === "function") {
+  const options = { frequency: 60, referenceFrame: "device" };
+  const sensor = new AbsoluteOrientationSensor(options);
+
+  sensor.addEventListener("reading", () => {
+    // model is a Three.js object instantiated elsewhere.
+    model.quaternion.fromArray(sensor.quaternion).inverse();
+    orn = model.quaternion.fromArray(sensor.quaternion).inverse();
+
+  });
+  sensor.addEventListener("error", (error) => {
+    if (error.name === "NotReadableError") {
+      console.log("Sensor is not available.");
+    }
+  });
+  sensor.start();
+
+}
+
+
 function tick() {
   frames = frames + 1
     date = new Date()
@@ -195,6 +264,14 @@ function tick() {
     ${checkmark(!document.getElementById('IframeMap').hidden)}
     ${checkmark(navigator.getBattery)}
     ${checkmark(!document.getElementById('weatherl').hidden)}`
+
+    document.getElementById("sensortext").innerHTML = `
+    ${Acceleration}<br>
+    ${lux}<br>
+    ${gav}<br>
+    ${gyro}<br>
+    ${orn}<br>
+    `
 
     window.requestAnimationFrame(tick);
 }

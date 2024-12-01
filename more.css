@@ -1,0 +1,89 @@
+/* Halo-Inspired CSS Style Sheet */
+
+/* Universal Variables */
+:root {
+    --primary-color: #0a4e35; /* Deep green/teal */
+    --accent-color: rgb(92, 214, 255); /* Neon green */
+    --background-color: #0b1e26; /* Dark space navy */
+    --text-color: #c8f0e0; /* Soft greenish-white */
+    --glow-color: rgb(92, 214, 255, 0.8); /* Glow effect */
+    --hover-scale: 1.08;
+    --transition-time: 0.3s;
+  }
+  
+  /* Button Styling */
+  button {
+    border: 2px solid var(--accent-color);
+    border-radius: 1px;
+    padding: 3px 3x;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-shadow: 0 0 5px var(--accent-color);
+    box-shadow: inset 0 0 8px var(--accent-color), 0 0 15px var(--glow-color);
+    transition: transform var(--transition-time), box-shadow var(--transition-time);
+  }
+  
+  button:hover {
+    transform: scale(var(--hover-scale));
+    box-shadow: inset 0 0 12px var(--accent-color), 0 0 25px var(--glow-color);
+  }
+  
+  button:active {
+    transform: scale(1);
+    box-shadow: inset 0 0 6px var(--accent-color), 0 0 10px var(--glow-color);
+  }
+  
+  /* Slider Container */
+  .slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  /* Slider Label */
+  .slider-label {
+    font-size: 14px;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 3px var(--glow-color);
+  }
+  
+  /* Slider Input */
+  input[type="range"] {
+    -webkit-appearance: none;
+    height: 10px;
+    background: linear-gradient(90deg, #0a4e35, var(--accent-color));
+    border-radius: 5px;
+    outline: none;
+    box-shadow: 0 0 10px var(--glow-color);
+    cursor: pointer;
+    transition: box-shadow var(--transition-time);
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: var(--accent-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color);
+    cursor: pointer;
+    transition: transform var(--transition-time), box-shadow var(--transition-time);
+  }
+  
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(var(--hover-scale));
+    box-shadow: 0 0 15px var(--glow-color), 0 0 30px var(--glow-color);
+  }
+  
+  /* Focus Effect */
+  input[type="range"]:focus {
+    box-shadow: 0 0 20px var(--glow-color), 0 0 40px var(--glow-color);
+  }
+  
